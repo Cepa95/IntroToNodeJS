@@ -15,12 +15,12 @@ const requestHandler = (req, res) => {
   if (url === "/message" && method === "POST") {
     const body = [];
     req.on("data", (chunk) => {
-      console.log(chunk);
+      // console.log(chunk);
       body.push(chunk);
     });
     return req.on("end", () => {
       const parsedBody = Buffer.concat(body).toString();
-      console.log(parsedBody);
+      // console.log(parsedBody);
       const message = parsedBody.split("=")[1];
       // fs.writeFileSync("message.txt", message); za vece datoteke
       fs.writeFile("message.txt", message, (err) => {
@@ -30,7 +30,7 @@ const requestHandler = (req, res) => {
       });
     });
   }
-  console.log(req.url, req.method, req.headers);
+  // console.log(req.url, req.method, req.headers);
   // process.exit();
   res.setHeader("Content-Type", "text/html");
   res.write("<html>");
