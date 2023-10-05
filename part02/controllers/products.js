@@ -20,13 +20,14 @@ exports.postAddProduct = (req, res) => {
 exports.getProducts = (req, res, next) => {
   // console.log('shop.js:', adminData.products);
   // res.sendFile(path.join(rootDir, "views", "shop.html"));
-  const products = Product.fetchAll();
-  res.render("shop", {
-    prods: products,
-    pageTitle: "shop",
-    path: "/",
-    hasProducts: products.length > 0,
-    activeShop: true,
-    productCSS: true,
+  Product.fetchAll((products) => {
+    res.render("shop", {
+      prods: products,
+      pageTitle: "shop",
+      path: "/",
+      hasProducts: products.length > 0,
+      activeShop: true,
+      productCSS: true,
+    });
   });
 };
