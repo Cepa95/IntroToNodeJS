@@ -18,11 +18,10 @@ exports.getProduct = (req, res, next) => {
     res.render("shop/product-detail", {
       product: product,
       pageTitle: product.title,
-      path: '/products'
+      path: "/products",
     });
   });
 };
-
 
 exports.getIndex = (req, res, next) => {
   Product.fetchAll((products) => {
@@ -39,6 +38,12 @@ exports.getCart = (req, res, next) => {
     path: "/cart",
     pageTitle: "cart",
   });
+};
+
+exports.postCart = (req, res, next) => {
+  const prodId = req.body.productId;
+  console.log(prodId);
+  res.redirect("/cart");
 };
 
 exports.getOrders = (req, res, next) => {
