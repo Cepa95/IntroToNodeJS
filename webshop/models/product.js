@@ -48,24 +48,18 @@ module.exports = class Product {
       }
     });
   }
+
   static deleteById(id) {
     getProductsFromFile((products) => {
       const product = products.find((prod) => prod.id === id);
-      if (!product) {
-        console.log(`Product with ID ${id} not found.`);
-        return;
-      }
       const updatedProducts = products.filter((prod) => prod.id !== id);
       fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
         if (!err) {
           Cart.deleteProduct(id, product.price);
-        } else {
-          console.log(err);
         }
       });
     });
   }
-  
 
   static fetchAll(cb) {
     getProductsFromFile(cb);
