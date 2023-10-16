@@ -36,13 +36,23 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-Product.belongsTo(User, {constrains: true, onDelete: 'CASCADE'});
+Product.belongsTo(User, { constrains: true, onDelete: "CASCADE" });
 User.hasMany(Product);
 
 sequelize
-  .sync( {force: true})
+  .sync()
   .then((result) => {
+    return User.findByPk(1);
     // console.log(result);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Josip", email: "test@example.com" });
+    }
+    return user;
+  })
+  .then((user) => {
+    console.log(user);
     app.listen(3000);
   })
   .catch((err) => {
