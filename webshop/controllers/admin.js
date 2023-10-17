@@ -13,17 +13,13 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  console.log("req.user: PROVJERA: ", req.user);
-  if (!req.user) {
-    return res.redirect('/');
-  }
-  Product.create({
-    title: title,
-    price: price,
-    imageUrl: imageUrl,
-    description: description,
-    userId: req.user.id
-  })
+  req.user
+    .createProduct({
+      title: title,
+      price: price,
+      imageUrl: imageUrl,
+      description: description,
+    })
     .then((result) => {
       // console.log(result);
       console.log("created successfully");
@@ -38,8 +34,10 @@ exports.getEditProduct = (req, res, next) => {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-    .then((product) => {
+  req.user
+    .getProducts({ where: { id: prodId } })
+    .then((products) => {
+      const product = products[0]
       if (!product) {
         return res.redirect("/");
       }
@@ -75,6 +73,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
+  req.user.getProducts();
   Product.findAll()
     .then((products) => {
       res.render("admin/products", {
@@ -96,5 +95,5 @@ exports.postDeleteProduct = (req, res, next) => {
       console.log("Destroyed product");
       res.redirect("/admin/products");
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
