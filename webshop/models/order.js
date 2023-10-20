@@ -1,14 +1,14 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
-const { DataTypes } = Sequelize;
+const Sequelize = require('sequelize');
 
-const Order = sequelize.define("order", {
+const sequelize = require('../util/database');
+
+const Order = sequelize.define('order', {
   id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
-    primaryKey: true,
-  },
+    primaryKey: true
+  }
 });
 
 module.exports = Order;
