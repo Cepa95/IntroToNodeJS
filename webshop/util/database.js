@@ -1,18 +1,33 @@
-require('dotenv').config(); 
+require("dotenv").config();
 
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-console.log('Password:', process.env.PASSWORD);
+
+let _db;
 
 const mongoConnect = (callback) => {
   MongoClient.connect(
-    "mongodb+srv://ceprnicjosip:" + process.env.PASSWORD + "@cluster0.liapsuw.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://ceprnicjosip:" +
+      process.env.PASSWORD +
+      "@cluster0.liapsuw.mongodb.net/?retryWrites=true&w=majority"
   )
     .then((client) => {
       console.log("Connected");
-      callback(client);
+      _db = client.db();
+      callback();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
 };
 
-module.exports = mongoConnect;
+const getDb = () => {
+  if (_db) {
+    return _db;
+  }
+  throw "no db found";
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
