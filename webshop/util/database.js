@@ -1,19 +1,18 @@
-// const mysql = require("mysql2");
+require('dotenv').config(); 
 
-// const pool = mysql.createPool({
-//   host: "localhost",
-//   user: "root",
-//   database:"node-complete",
-//   password:"nodejs123321"
-// });
+const mongodb = require("mongodb");
+const MongoClient = mongodb.MongoClient;
+console.log('Password:', process.env.PASSWORD);
 
-// module.exports = pool.promise();
+const mongoConnect = (callback) => {
+  MongoClient.connect(
+    "mongodb+srv://ceprnicjosip:" + process.env.PASSWORD + "@cluster0.liapsuw.mongodb.net/?retryWrites=true&w=majority"
+  )
+    .then((client) => {
+      console.log("Connected");
+      callback(client);
+    })
+    .catch((err) => console.log(err));
+};
 
-const Sequelize = require("sequelize");
-
-const sequelize = new Sequelize("node-complete", "root", "nodejs123321", {
-  dialect: "mysql",
-  host: "localhost",
-});
-
-module.exports = sequelize;
+module.exports = mongoConnect;
